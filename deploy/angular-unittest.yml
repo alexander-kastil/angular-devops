@@ -37,9 +37,6 @@ stages:
       - script: npm install
         displayName: 'npm install'
         condition: eq(variables['npmCache'],False)
-      
-      # - script: ng test --watch=false --browsers=ChromeHeadless --code-coverage
-      #   displayName: 'Test Angular'
 
       - task: Npm@1
         displayName: 'Test Angular'
@@ -51,10 +48,10 @@ stages:
         displayName: 'Publish Angular test results'
         condition: succeededOrFailed()
         inputs:
-          searchFolder: $(System.DefaultWorkingDirectory)/junit
+          searchFolder: $(System.DefaultWorkingDirectory)/testresults/junit
           testRunTitle: Angular
           testResultsFormat: JUnit
-          testResultsFiles: "**/TESTS*.xml"
+          testResultsFiles: "**/unit-test-result.xml"
 
       - task: PublishCodeCoverageResults@1
         displayName: 'Publish code coverage Angular results'
