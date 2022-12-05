@@ -1,0 +1,37 @@
+# trigger:
+#   branches:
+#     include:
+#     - master
+
+trigger: none
+pr: none
+
+stages:
+- stage: build
+
+  jobs:
+    - job: Job
+      pool:
+        vmImage: 'ubuntu-latest'
+
+      steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '16.x'
+        displayName: 'Install Node.js'
+        
+      - script: |
+          npm install -g @angular/cli
+          npm install
+        displayName: 'install packages'
+
+      - script:           
+          ng build
+        displayName: 'npm build'
+      
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: 'dist/angular-devops'
+          ArtifactName: 'ngapp'
+          publishLocation: 'Container'
+        displayName: 'Publish Artifacts'
