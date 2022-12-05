@@ -1,13 +1,16 @@
 {
   "name": "angular-devops",
-  "version": "0.0.0",
+  "version": "15.0.0",
+  "author": {
+    "name": "Alexander Pajer",
+    "email": "alexander.pajer@integrations.at"},
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "test-headless": "ng test --watch=false --browsers=ChromeHeadless"
+    "test-headless": "ng test --watch=false --browsers=ChromeHeadless --code-coverage"
   },
   "private": true,
   "dependencies": {
