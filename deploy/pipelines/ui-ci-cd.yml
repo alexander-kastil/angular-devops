@@ -1,0 +1,64 @@
+name: Deploy UI to Static Website
+
+trigger:
+  branches:
+    include:
+      - master
+
+  paths:
+    exclude:
+      - deploy/*
+
+pool:
+  vmImage: "ubuntu-latest"
+
+variables:
+  nodeVer: '16.15.0'
+  # token: '...' -> set as pipeline var
+
+stages:
+- stage: BuildIaC
+  displayName: Build and IaC
+
+  jobs:
+    - job: Build
+
+      steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: $(nodeVer)
+        displayName: Install Node $(nodeVer)        
+
+      - script: npm install
+        displayName: 'npm i'
+        condition: eq(variables['npmCache'],False)
+
+      - script: npm run build --c production
+        displayName: 'Build App'
+
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: dist/angular-devops
+          ArtifactName: 'ngapp'
+          publishLocation: 'Container'
+        displayName: 'Publish Artifacts'
+
+- stage: Deploy
+  displayName: Deploy to static WA
+  jobs:
+    - job: Deploy
+
+      steps:
+        - checkout: self
+          submodules: true
+        - task: DownloadPipelineArtifact@2
+          inputs:
+            buildType: 'current'
+        - task: AzureStaticWebApp@0
+          inputs:
+            workingDirectory: $(Pipeline.Workspace)
+            app_location: ngapp
+            skip_app_build: true
+            skip_api_build: true
+          env:
+            azure_static_web_apps_api_token: $(token)
