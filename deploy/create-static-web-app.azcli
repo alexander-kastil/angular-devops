@@ -1,0 +1,6 @@
+grp=dev-hosting
+loc=westeurope
+app=angular-devops
+
+az group create -n $grp -l $loc
+az staticwebapp create -n $app -g $grp
