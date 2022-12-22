@@ -5,16 +5,11 @@ trigger:
     include:
       - master
 
-  paths:
-    include:
-      - app/ui/*
-
 pool:
   vmImage: "ubuntu-latest"
 
 variables:
   nodeVer: '16.15.0'
-  apploc: /
 
 stages:
 - stage: BuildTest
@@ -30,22 +25,20 @@ stages:
         displayName: Install Node $(nodeVer)        
       - task: Cache@2
         inputs:
-            key: '$(System.DefaultWorkingDirectory)/$(apploc)/package-lock.json'
-            path: '$(System.DefaultWorkingDirectory)/$(apploc)/node_modules'
+            key: '$(System.DefaultWorkingDirectory)/package-lock.json'
+            path: '$(System.DefaultWorkingDirectory)/node_modules'
             cacheHitVar: 'npmCache'
 
       - script: npm install
         displayName: 'npm i'
-        workingDirectory: $(apploc)
         condition: eq(variables['npmCache'],False)
 
       - script: npm run build --c production
         displayName: 'Build App'
-        workingDirectory: $(apploc)
 
       - task: PublishBuildArtifacts@1
         inputs:
-          PathtoPublish: $(apploc)/dist/angular-devops
+          PathtoPublish: /dist/angular-devops
           ArtifactName: 'ngapp'
           publishLocation: 'Container'
         displayName: 'Publish Artifacts'
