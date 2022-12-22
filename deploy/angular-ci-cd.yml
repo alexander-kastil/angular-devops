@@ -38,7 +38,7 @@ stages:
 
       - task: PublishBuildArtifacts@1
         inputs:
-          PathtoPublish: /dist/angular-devops
+          PathtoPublish: $(System.DefaultWorkingDirectory)/dist/angular-devops
           ArtifactName: 'ngapp'
           publishLocation: 'Container'
         displayName: 'Publish Artifacts'
