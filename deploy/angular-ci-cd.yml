@@ -10,6 +10,7 @@ pool:
 
 variables:
   nodeVer: '16.15.0'
+  # add local token var with deployment token
 
 stages:
 - stage: BuildTest
