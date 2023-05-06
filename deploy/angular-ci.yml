@@ -24,13 +24,12 @@ stages:
         displayName: 'Install Node.js'
 
       - script: |
-          npm install -g @angular/cli
           npm install --force
-        displayName: 'install packages'
+        displayName: 'Install packages'
 
       - script:
-          ng build
-        displayName: 'npm build'
+          npm run build
+        displayName: 'Build'
 
       - task: PublishBuildArtifacts@1
         inputs:
