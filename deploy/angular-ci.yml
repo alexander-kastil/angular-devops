@@ -25,7 +25,7 @@ stages:
 
       - script: |
           npm install --force
-        displayName: 'Install packages'
+        displayName: 'Install Packages'
 
       - script:
           npm run build
