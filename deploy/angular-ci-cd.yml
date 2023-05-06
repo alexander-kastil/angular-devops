@@ -17,9 +17,9 @@ pool:
 variables:
   nodeVer: '18.10.0'
   buildfolder: az-static-webapp
-  apploc: '<path-to-angular-app>'
+  apploc: '/' #could be someting like /apps/ngapp in a monorepo
   apiUrl: 'https://mockapi.azurewebsites.net'
-  deploymentToken: '<enter-token-here>'
+  deploymentToken: '<enter-token-here>' #better save deployment token as pipeline var or keyvault
 
 stages:
 - stage: Build
@@ -36,7 +36,7 @@ stages:
       - task: replacetokens@5
         displayName: Update Config
         inputs:
-          rootDirectory: '$(System.DefaultWorkingDirectory)/$(apploc)'
+          rootDirectory: '$(System.DefaultWorkingDirectory)$(apploc)'
           targetFiles: '**/*.prod.ts'
           encoding: 'auto'
           tokenPattern: 'doublebraces'
@@ -51,8 +51,8 @@ stages:
 
       - task: Cache@2
         inputs:
-            key: '$(System.DefaultWorkingDirectory)/$(apploc)package-lock.json'
-            path: '$(System.DefaultWorkingDirectory)/$(apploc)node_modules'
+            key: '$(System.DefaultWorkingDirectory)$(apploc)package-lock.json'
+            path: '$(System.DefaultWorkingDirectory)$(apploc)node_modules'
             cacheHitVar: 'npmCache'
 
       - script: npm install

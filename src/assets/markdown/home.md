@@ -2,7 +2,7 @@
 
 - The app is using a mock `apiUrl` that is defined in environments.ts and whos value will be replaced by the Azure DevOps
 
-- Examine `staticwebapp.config.json`. It contains the configuration for the Azure Static Web App. Here it sets `URL-rewriting` rules.
+- Examine `assets/staticwebapp.config.json`. It contains the configuration for the Azure Static Web App. Here it sets `URL-rewriting` rules.
 
   ```json
   {
@@ -27,9 +27,14 @@
 - Create the Static Web App by execution `create-static-web-app.azcli`. You will use the deployment token later in your DevOps pipeline:
 
   ```bash
+  grp=ng-adv
+  loc=westeurope
+  app=angular-app-$RANDOM
+
   az group create -n $grp -l $loc
   az staticwebapp create -n $app -g $grp
   token=$(az staticwebapp secrets list --name $app --query "properties.apiKey")
+  echo "Deployment Token: $token"
   ```
 
 - Import `build-deploy-swa-ado.yml` into your Azure Devops tenant. It builds and deploys the app to Azure Static Web Apps. It uses the deployment token from the previous step.
