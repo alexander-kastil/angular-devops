@@ -6,6 +6,9 @@
 trigger: none
 pr: none
 
+variables:
+  buildfolder: az-static-webapp
+
 stages:
 - stage: build
 
@@ -19,19 +22,19 @@ stages:
         inputs:
           versionSpec: '18.10.0'
         displayName: 'Install Node.js'
-        
+
       - script: |
           npm install -g @angular/cli
           npm install
         displayName: 'install packages'
 
-      - script:           
+      - script:
           ng build
         displayName: 'npm build'
-      
+
       - task: PublishBuildArtifacts@1
         inputs:
-          PathtoPublish: 'dist/angular-devops'
+          PathtoPublish: 'dist/$(buildfolder)'
           ArtifactName: 'ngapp'
           publishLocation: 'Container'
         displayName: 'Publish Artifacts'

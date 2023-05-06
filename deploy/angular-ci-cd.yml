@@ -1,45 +1,72 @@
-name: Deploy UI to Static Website
+name: Angular Static Website
 
 trigger:
   branches:
     include:
       - master
 
+  paths:
+    include:
+      - app/ui/*
+
+pr: none
+
 pool:
   vmImage: "ubuntu-latest"
 
 variables:
-  nodeVer: '16.15.0'
-  # add local token var with deployment token
+  nodeVer: '18.10.0'
+  buildfolder: az-static-webapp
+  apploc: '<path-to-angular-app>'
+  apiUrl: 'https://mockapi.azurewebsites.net'
+  deploymentToken: '<enter-token-here>'
 
 stages:
-- stage: BuildTest
-  displayName: Build Test Angular
+- stage: Build
+  displayName: Build Angular
 
   jobs:
     - job: Build
-
       steps:
       - task: NodeTool@0
         inputs:
           versionSpec: $(nodeVer)
-        displayName: Install Node $(nodeVer)        
+        displayName: Install Node $(nodeVer)
+
+      - task: replacetokens@5
+        displayName: Update Config
+        inputs:
+          rootDirectory: '$(System.DefaultWorkingDirectory)/$(apploc)'
+          targetFiles: '**/*.prod.ts'
+          encoding: 'auto'
+          tokenPattern: 'doublebraces'
+          writeBOM: true
+          actionOnMissing: 'warn'
+          keepToken: false
+          actionOnNoFiles: 'continue'
+          enableTransforms: false
+          enableRecursion: false
+          useLegacyPattern: false
+          enableTelemetry: true
+
       - task: Cache@2
         inputs:
-            key: '$(System.DefaultWorkingDirectory)/package-lock.json'
-            path: '$(System.DefaultWorkingDirectory)/node_modules'
+            key: '$(System.DefaultWorkingDirectory)/$(apploc)package-lock.json'
+            path: '$(System.DefaultWorkingDirectory)/$(apploc)node_modules'
             cacheHitVar: 'npmCache'
 
       - script: npm install
         displayName: 'npm i'
+        workingDirectory: $(apploc)
         condition: eq(variables['npmCache'],False)
 
-      - script: npm run build --c production
+      - script: npm run build-prod
         displayName: 'Build App'
+        workingDirectory: $(apploc)
 
       - task: PublishBuildArtifacts@1
         inputs:
-          PathtoPublish: $(System.DefaultWorkingDirectory)/dist/angular-devops
+          PathtoPublish: $(apploc)dist/$(buildfolder)
           ArtifactName: 'ngapp'
           publishLocation: 'Container'
         displayName: 'Publish Artifacts'
@@ -48,7 +75,6 @@ stages:
   displayName: Deploy to static WA
   jobs:
     - job: Deploy
-
       steps:
         - checkout: self
           submodules: true
@@ -57,9 +83,9 @@ stages:
             buildType: 'current'
         - task: AzureStaticWebApp@0
           inputs:
-            workingDirectory: $(Pipeline.Workspace)
-            app_location: ngapp
+            workingDirectory: '$(Pipeline.Workspace)'
+            app_location: 'ngapp'
+            config_file_location: 'ngapp/assets/'
             skip_app_build: true
             skip_api_build: true
-          env:
-            azure_static_web_apps_api_token: $(token)
+            azure_static_web_apps_api_token: '$(token)'

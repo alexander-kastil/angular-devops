@@ -1,6 +1,8 @@
-grp=dev-hosting
+grp=ng-adv
 loc=westeurope
-app=angular-devops
+app=angular-app-$RANDOM
 
 az group create -n $grp -l $loc
 az staticwebapp create -n $app -g $grp
+token=$(az staticwebapp secrets list --name $app --query "properties.apiKey")
+echo "Deployment Token: $token"
