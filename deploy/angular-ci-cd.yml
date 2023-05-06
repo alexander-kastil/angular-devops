@@ -17,9 +17,10 @@ pool:
 variables:
   nodeVer: '18.10.0'
   buildfolder: az-static-webapp
-  apploc: '/' #could be someting like /apps/ngapp in a monorepo
   apiUrl: 'https://mockapi.azurewebsites.net'
-  deploymentToken: '<enter-token-here>' #better save deployment token as pipeline var or keyvault
+  # apploc could be someting like /apps/ngapp in a monorepo
+  apploc: '/'
+  # add the deployment token as pipeline variable
 
 stages:
 - stage: Build
