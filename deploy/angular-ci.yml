@@ -24,7 +24,7 @@ stages:
         displayName: 'Install Node.js'
 
       - script: |
-          npm install --force
+          npm install
         displayName: 'Install Packages'
 
       - script:
