@@ -34,7 +34,7 @@ stages:
             path: '$(System.DefaultWorkingDirectory)/node_modules'
             cacheHitVar: 'npmCache'
 
-      - script: npm install --force
+      - script: npm install
         displayName: 'npm install'
         condition: eq(variables['npmCache'],False)
       
