@@ -18,7 +18,7 @@ variables:
   rg: angular-11152
   acr: angularacr11152
   img: 'angularacr11152.azurecr.io/angular-devops:2922'
-  pwd: 'SdG7N4ssrvVQrbxoXR+lFhdTRs58q6Yise4JU25RQM+ACRDNfh9J'
+  # pwd: set as pipeline var
 
 stages:
 - stage: Deploy
@@ -30,12 +30,13 @@ stages:
       - task: AzureContainerApps@1
         inputs:
           azureSubscription: 'scRG'
-          acrName: $(acr)
-          acrUsername: $(acr)
-          acrPassword: $(pwd)
+          acrName: '$(acr)'
+          acrUsername: '$(acr)'
+          acrPassword: '$(pwd)'
           imageToDeploy: '$(img)'
           containerAppName: '$(app)'
           resourceGroup: '$(rg)'
-          containerAppEnvironment: $env
+          containerAppEnvironment: '$env'
           targetPort: '80'
+          environmentVariables: 'ENV_API_URL=http://mockapi'
           ingress: 'external'
