@@ -13,9 +13,12 @@ pool:
 
 variables:
   conAz: scRG
-  img: 'angular-devops:latest'
+  env: 'angular-env'
   app: angular-demo-app
   rg: angular-11152
+  acr: angularacr11152
+  img: 'angular-devops:latest'
+  pwd: 'SdG7N4ssrvVQrbxoXR+lFhdTRs58q6Yise4JU25RQM+ACRDNfh9J'
 
 stages:
 - stage: Deploy
@@ -27,12 +30,12 @@ stages:
       - task: AzureContainerApps@1
         inputs:
           azureSubscription: 'scRG'
-          acrName: 'angularacr11152'
-          acrUsername: 'angularacr11152'
-          acrPassword: 'SdG7N4ssrvVQrbxoXR+lFhdTRs58q6Yise4JU25RQM+ACRDNfh9J'
-          imageToDeploy: '$(img)'
+          acrName: $(acr)
+          acrUsername: $(acr)
+          acrPassword: $(pwd)
+          imageToDeploy: '$(acr)/$(img)'
           containerAppName: '$(app)'
           resourceGroup: '$(rg)'
-          containerAppEnvironment: 'angular-env'
+          containerAppEnvironment: $env
           targetPort: '80'
           ingress: 'external'
