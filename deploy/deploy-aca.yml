@@ -9,7 +9,11 @@ trigger: none
 pr: none
 
 pool:
-  vmImage: "ubuntu-latest"
+  vmImage: ubuntu-latest
+  conAZ: scRG
+  img: angular-devops:latest
+  app: angular-demo-app
+  rg: angular-11152
 
 stages:
 - stage: Deploy
@@ -20,7 +24,7 @@ stages:
       steps:
       - task: AzureContainerApps@1
         inputs:
-          azureSubscription: 'my-subscription-service-connection'
-          imageToDeploy : 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
-          containerAppName: 'my-container-app'
-          resourceGroup: 'my-container-app-rg'
+          azureSubscription: '$(conAZ)'
+          imageToDeploy: '$(img)'
+          containerAppName: '$(app)'
+          resourceGroup: '$(rg)'
