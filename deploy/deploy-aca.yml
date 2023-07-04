@@ -24,7 +24,7 @@ stages:
       steps:
       - task: AzureContainerApps@1
         inputs:
-          azureSubscription: $(conAZ)
+          azureSubscription: scRG
           imageToDeploy: '$(img)'
           containerAppName: '$(app)'
           resourceGroup: '$(rg)'
