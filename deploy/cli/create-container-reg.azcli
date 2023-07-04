@@ -1,9 +1,9 @@
-env=$RANDOM
+env=dev
 grp=angular-$env
 loc=westeurope
 acr=angularacr$env
 
-az group create -n $grp -l westeurope
+az group create -n $grp -l $loc
 
 az acr create -g $grp --name $acr --sku Basic
 az acr login --name $acr

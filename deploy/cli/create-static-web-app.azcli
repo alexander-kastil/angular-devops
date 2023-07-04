@@ -1,4 +1,4 @@
-env=$RANDOM
+env=dev
 grp=angular-$env
 loc=westeurope
 app=$grp-$env
