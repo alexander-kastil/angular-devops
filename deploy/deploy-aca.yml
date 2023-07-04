@@ -1,4 +1,4 @@
-name: cd static webapp
+name: deploy to aca
 
 # trigger:
 #   branches:
@@ -17,7 +17,7 @@ variables:
   app: angular-demo-app
   rg: angular-11152
   acr: angularacr11152
-  img: 'angular-devops:latest'
+  img: 'angular-devops'
   pwd: 'SdG7N4ssrvVQrbxoXR+lFhdTRs58q6Yise4JU25RQM+ACRDNfh9J'
 
 stages:
