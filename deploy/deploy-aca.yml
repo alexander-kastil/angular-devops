@@ -17,7 +17,7 @@ variables:
   app: angular-demo-app
   rg: angular-11152
   acr: angularacr11152
-  img: 'angular-devops:2922'
+  img: 'angularacr11152.azurecr.io/angular-devops:2922'
   pwd: 'SdG7N4ssrvVQrbxoXR+lFhdTRs58q6Yise4JU25RQM+ACRDNfh9J'
 
 stages:
@@ -33,7 +33,7 @@ stages:
           acrName: $(acr)
           acrUsername: $(acr)
           acrPassword: $(pwd)
-          imageToDeploy: '$(acr)/$(img)'
+          imageToDeploy: '$(img)'
           containerAppName: '$(app)'
           resourceGroup: '$(rg)'
           containerAppEnvironment: $env
