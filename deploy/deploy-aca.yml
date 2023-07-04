@@ -10,7 +10,9 @@ pr: none
 
 pool:
   vmImage: ubuntu-latest
-  conAZ: scRG
+
+variables:
+  conAz: scRG
   img: angular-devops:latest
   app: angular-demo-app
   rg: angular-11152
@@ -24,7 +26,7 @@ stages:
       steps:
       - task: AzureContainerApps@1
         inputs:
-          azureSubscription: scRG
+          azureSubscription: $(conAz)
           imageToDeploy: '$(img)'
           containerAppName: '$(app)'
           resourceGroup: '$(rg)'
