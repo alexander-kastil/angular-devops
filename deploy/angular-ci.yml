@@ -38,6 +38,6 @@ stages:
       - task: PublishBuildArtifacts@1
         inputs:
           PathtoPublish: 'dist/$(dist)'
-          ArtifactName: $(ngapp)
+          ArtifactName: $(pkg)
           publishLocation: 'Container'
         displayName: 'Publish Artifacts'
