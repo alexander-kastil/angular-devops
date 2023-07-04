@@ -26,7 +26,11 @@ stages:
       steps:
       - task: AzureContainerApps@1
         inputs:
-          azureSubscription: $(conAz)
+          azureSubscription: 'scRG'
+          acrName: 'angularacr11152'
           imageToDeploy: '$(img)'
           containerAppName: '$(app)'
           resourceGroup: '$(rg)'
+          containerAppEnvironment: 'angular-env'
+          targetPort: '80'
+          ingress: 'external'
