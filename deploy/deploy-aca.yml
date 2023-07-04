@@ -13,7 +13,7 @@ pool:
 
 variables:
   conAz: scRG
-  img: angular-devops:latest
+  img: angular-devops
   app: angular-demo-app
   rg: angular-11152
 
