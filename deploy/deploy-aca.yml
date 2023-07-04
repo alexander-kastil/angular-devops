@@ -13,7 +13,7 @@ pool:
 
 variables:
   conAz: scRG
-  img: angular-devops
+  img: 'angular-devops:latest'
   app: angular-demo-app
   rg: angular-11152
 
@@ -28,6 +28,8 @@ stages:
         inputs:
           azureSubscription: 'scRG'
           acrName: 'angularacr11152'
+          acrUsername: 'angularacr11152'
+          acrPassword: 'SdG7N4ssrvVQrbxoXR+lFhdTRs58q6Yise4JU25RQM+ACRDNfh9J'
           imageToDeploy: '$(img)'
           containerAppName: '$(app)'
           resourceGroup: '$(rg)'
