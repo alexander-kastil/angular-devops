@@ -27,12 +27,14 @@
 - Create the Static Web App by execution `create-static-web-app.azcli`. You will use the deployment token later in your DevOps pipeline:
 
   ```bash
-  grp=ng-adv
+  env=$RANDOM
+  grp=angular-$env
   loc=westeurope
-  app=angular-app-$RANDOM
+  app=$grp-$env
 
   az group create -n $grp -l $loc
   az staticwebapp create -n $app -g $grp
+
   token=$(az staticwebapp secrets list --name $app --query "properties.apiKey")
   echo "Deployment Token: $token"
   ```
@@ -51,6 +53,7 @@
       include:
         - app/ui/*
 
+  trigger: none
   pr: none
 
   pool:
@@ -58,10 +61,11 @@
 
   variables:
     nodeVer: '18.10.0'
-    buildfolder: az-static-webapp
-    apploc: '<path-to-angular-app>'
+    dist: angular-devops
     apiUrl: 'https://mockapi.azurewebsites.net'
-    deploymentToken: '<enter-token-here>'
+    # apploc could be someting like /apps/ngapp in a monorepo
+    apploc: '/'
+    # add the deployment token as pipeline variable
 
   stages:
   - stage: Build
@@ -78,7 +82,7 @@
         - task: replacetokens@5
           displayName: Update Config
           inputs:
-            rootDirectory: '$(System.DefaultWorkingDirectory)/$(apploc)'
+            rootDirectory: '$(System.DefaultWorkingDirectory)$(apploc)'
             targetFiles: '**/*.prod.ts'
             encoding: 'auto'
             tokenPattern: 'doublebraces'
@@ -93,8 +97,8 @@
 
         - task: Cache@2
           inputs:
-              key: '$(System.DefaultWorkingDirectory)/$(apploc)package-lock.json'
-              path: '$(System.DefaultWorkingDirectory)/$(apploc)node_modules'
+              key: '$(System.DefaultWorkingDirectory)$(apploc)package-lock.json'
+              path: '$(System.DefaultWorkingDirectory)$(apploc)node_modules'
               cacheHitVar: 'npmCache'
 
         - script: npm install
@@ -108,7 +112,7 @@
 
         - task: PublishBuildArtifacts@1
           inputs:
-            PathtoPublish: $(apploc)dist/$(buildfolder)
+            PathtoPublish: $(apploc)dist/$(dist)
             ArtifactName: 'ngapp'
             publishLocation: 'Container'
           displayName: 'Publish Artifacts'
