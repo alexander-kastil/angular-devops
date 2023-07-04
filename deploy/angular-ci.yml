@@ -17,7 +17,8 @@ stages:
 - stage: build
 
   jobs:
-    - job: Job
+    - job: Build
+      displayName: Build Angular
       pool:
         vmImage: 'ubuntu-latest'
 
