@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "az-static-webapp": {
+    "angular-devops": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser-esbuild",
           "options": {
-            "outputPath": "dist/az-static-webapp",
+            "outputPath": "dist/angular-devops",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -79,10 +79,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "az-static-webapp:build:production"
+              "browserTarget": "angular-devops:build:production"
             },
             "development": {
-              "browserTarget": "az-static-webapp:build:development"
+              "browserTarget": "angular-devops:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -90,7 +90,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "az-static-webapp:build"
+            "browserTarget": "angular-devops:build"
           }
         },
         "test": {

@@ -1,14 +1,11 @@
-name: Angular Static Website
+name: cd static webapp
 
-trigger:
-  branches:
-    include:
-      - master
+# trigger:
+#   branches:
+#     include:
+#       - master
 
-  paths:
-    include:
-      - app/ui/*
-
+trigger: none
 pr: none
 
 pool:
@@ -16,7 +13,7 @@ pool:
 
 variables:
   nodeVer: '18.10.0'
-  buildfolder: az-static-webapp
+  dist: angular-devops
   apiUrl: 'https://mockapi.azurewebsites.net'
   # apploc could be someting like /apps/ngapp in a monorepo
   apploc: '/'
@@ -67,7 +64,7 @@ stages:
 
       - task: PublishBuildArtifacts@1
         inputs:
-          PathtoPublish: $(apploc)dist/$(buildfolder)
+          PathtoPublish: $(apploc)dist/$(dist)
           ArtifactName: 'ngapp'
           publishLocation: 'Container'
         displayName: 'Publish Artifacts'

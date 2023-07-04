@@ -1,4 +1,4 @@
-name: UI Unittest
+name: unittest
 
 # trigger:
 #   branches:
@@ -13,6 +13,7 @@ pool:
 
 variables:
   nodeVer: '18.10.0'
+  dist: angular-devops
 
 stages:
 - stage: UnitTest
@@ -20,13 +21,13 @@ stages:
 
   jobs:
     - job: Jasmin
-      
-      steps:       
+
+      steps:
       - task: NodeTool@0
         inputs:
           versionSpec: $(nodeVer)
         displayName: Install Node $(nodeVer)
-      
+
       - task: Cache@2
         displayName: Setup Node Cache
         inputs:
@@ -37,7 +38,7 @@ stages:
       - script: npm install
         displayName: 'npm install'
         condition: eq(variables['npmCache'],False)
-      
+
       # - script: ng test --watch=false --browsers=ChromeHeadless --code-coverage
       #   displayName: 'Test Angular'
 
@@ -46,7 +47,7 @@ stages:
         inputs:
           command: 'custom'
           customCommand: 'run test-headless'
-          
+
       - task: PublishTestResults@2
         displayName: 'Publish Angular test results'
         condition: succeededOrFailed()
