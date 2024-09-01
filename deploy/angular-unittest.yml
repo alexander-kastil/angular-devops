@@ -1,4 +1,4 @@
-name: unittest
+name: angular-unittest
 
 # trigger:
 #   branches:
@@ -38,10 +38,6 @@ stages:
       - script: npm install
         displayName: 'npm install'
         condition: eq(variables['npmCache'],False)
-
-      # - script: ng test --watch=false --browsers=ChromeHeadless --code-coverage
-      #   displayName: 'Test Angular'
-
       - task: Npm@1
         displayName: 'Test Angular'
         inputs:
