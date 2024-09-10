@@ -13,14 +13,15 @@ variables:
   dist: angular-devops
   pkg: ngapp
 
+pool:
+  vmImage: 'ubuntu-latest'  
+
 stages:
 - stage: build
 
   jobs:
     - job: Build
       displayName: Build Angular
-      pool:
-        vmImage: 'ubuntu-latest'
 
       steps:
       - task: NodeTool@0
